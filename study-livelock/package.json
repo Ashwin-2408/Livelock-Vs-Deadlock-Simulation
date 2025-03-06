@@ -14,6 +14,8 @@
     "framer-motion": "^12.4.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-syntax-highlighter": "^15.6.1",
+    "remark-gfm": "^4.0.1",
     "tailwindcss": "^4.0.11"
   },
   "devDependencies": {
