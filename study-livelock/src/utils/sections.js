@@ -1,6 +1,6 @@
-import { simulation1_details } from "./simulation1.jsx";
-import { simulation2_details } from "./simulation2.jsx";
-import { simulation3_details } from "./simulation3.jsx";
+import { simulation1_details } from "./details1.jsx";
+import { simulation2_details } from "./details2.jsx";
+import { simulation3_details } from "./details3.jsx";
 
 const sections = [
   simulation1_details,

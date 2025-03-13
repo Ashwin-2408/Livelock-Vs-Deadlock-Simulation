@@ -6,11 +6,13 @@ import { motion } from "framer-motion";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import sections from "./utils/sections";
+import LivelockSimulation1 from "../components/simulation1";
 
 function App() {
   const [selectedScenario, setSelectedScenario] = useState(null);
   const [showCode, setShowCode] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+  const [showSimulation, setShowSimulation] = useState(false);
 
   const scenarios = sections;
 
@@ -62,16 +64,28 @@ function App() {
                   onClick={() => {
                     setShowInfo(!showInfo);
                     setShowCode(false);
+                    setShowSimulation(false);
                   }}
                 >
                   {showInfo ? "Hide Info" : "Show Info"}
                 </Button>
-                <Button variant="secondary">Run Simulation</Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setShowCode(false);
+                    setShowSimulation(!showSimulation);
+                    setShowInfo(false);
+                  }}
+                >
+                  {showSimulation ? "Close Simulation" : "Run Simulation"}
+                </Button>
+
                 <Button
                   variant="outline"
                   onClick={() => {
                     setShowCode(!showCode);
                     setShowInfo(false);
+                    setShowSimulation(false);
                   }}
                 >
                   {showCode ? "Hide Code" : "Show Code"}
@@ -82,6 +96,13 @@ function App() {
               {showInfo && (
                 <div className="mt-6 p-4 bg-gray-800 rounded-lg">
                   {scenarios[selectedScenario].description}
+                </div>
+              )}
+
+              {/* Show Simulation Section */}
+              {showSimulation && (
+                <div className="mt-6 p-4 bg-gray-800 rounded-lg">
+                  {selectedScenario == 0 ? (<LivelockSimulation1 />) : ""}
                 </div>
               )}
 

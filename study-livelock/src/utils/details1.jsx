@@ -1,3 +1,5 @@
+import LivelockSimulation1 from "../../components/simulation1";
+
 export const simulation1_details = {
   title: "Scenario 1: High-Priority Preemption",
   info: "A low-priority process gets constantly preempted by a high-priority process, causing livelock.",
