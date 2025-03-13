@@ -28,6 +28,12 @@ const LivelockSimulation = () => {
       text: "⏳ Step 4: The switching continues indefinitely, causing livelock.",
       switching: true,
     },
+    {
+        cpu: "High Priority Process",
+        queue: ["Low Priority Process"],
+        text: "⏳ Step 5: The switching continues indefinitely, causing livelock.",
+        switching: true
+      },
   ];
 
   const [step, setStep] = useState(0);

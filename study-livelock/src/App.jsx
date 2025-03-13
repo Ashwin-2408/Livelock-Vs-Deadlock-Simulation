@@ -7,24 +7,37 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import sections from "./utils/sections";
 import LivelockSimulation1 from "../components/simulation1";
+import { InfoIcon } from "lucide-react";
+import LivelockDeadlockModal from "../components/diffModal";
 
 function App() {
   const [selectedScenario, setSelectedScenario] = useState(null);
   const [showCode, setShowCode] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [showSimulation, setShowSimulation] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const scenarios = sections;
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
-      <motion.h1
-        className="text-4xl font-bold text-center mb-6"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        Livelock vs. Deadlock Simulation
-      </motion.h1>
+      <LivelockDeadlockModal isOpen={openModal} setIsOpen={setOpenModal} />
+      <div className="flex flex-row gap-4 w-fit mx-auto">
+        <motion.h1
+          className="text-4xl font-bold text-center mb-6"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          Livelock vs. Deadlock Simulation
+        </motion.h1>
+        <div
+          className="flex flex-row text-sm gap-1 mt-3 cursor-pointer transition duration-100 hover:scale-[105%]"
+          onClick={() => setOpenModal(true)}
+          title="Show Difference"
+        >
+          <InfoIcon />
+        </div>
+      </div>
 
       <p className="text-center text-lg mb-8 max-w-[80%] mx-auto">
         Explore how livelock and deadlock occur in operating systems through
@@ -102,7 +115,7 @@ function App() {
               {/* Show Simulation Section */}
               {showSimulation && (
                 <div className="mt-6 p-4 bg-gray-800 rounded-lg">
-                  {selectedScenario == 0 ? (<LivelockSimulation1 />) : ""}
+                  {selectedScenario == 0 ? <LivelockSimulation1 /> : ""}
                 </div>
               )}
 
