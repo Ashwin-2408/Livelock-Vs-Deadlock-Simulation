@@ -9,6 +9,7 @@ import sections from "./utils/sections";
 import LivelockSimulation1 from "../components/simulation1";
 import { InfoIcon } from "lucide-react";
 import LivelockDeadlockModal from "../components/diffModal";
+import OverPolitenessSimulation from "../components/OverPolitenessSimulation";
 
 function App() {
   const [selectedScenario, setSelectedScenario] = useState(null);
@@ -116,6 +117,11 @@ function App() {
               {showSimulation && (
                 <div className="mt-6 p-4 bg-gray-800 rounded-lg">
                   {selectedScenario == 0 ? <LivelockSimulation1 /> : ""}
+                  {selectedScenario == 2 ? (
+                    <OverPolitenessSimulation></OverPolitenessSimulation>
+                  ) : (
+                    ""
+                  )}
                 </div>
               )}
 
