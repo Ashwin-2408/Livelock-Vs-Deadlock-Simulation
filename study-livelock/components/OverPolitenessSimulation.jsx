@@ -45,7 +45,7 @@ const OverPolitenessSimulation = () => {
       setStep((prev) => (prev + 1) % steps.length);
     }, 5000);
     return () => clearTimeout(timer);
-  }, [step]);
+  }, [step, steps.length]);
 
   // Delay worker updates by 2 seconds after text changes
   useEffect(() => {
@@ -58,18 +58,7 @@ const OverPolitenessSimulation = () => {
   // Animation for worker bubbles
   const getAnimation = (action) => {
     switch (action) {
-      case "thinking":
-        return {
-          scale: [1, 1.05, 1],
-          transition: { repeat: Infinity, duration: 2 },
-        };
-      case "deferring":
-        return {
-          x: [0, -10, 0],
-          transition: { repeat: Infinity, duration: 1.5 },
-        };
-      case "insisting":
-        return { y: [0, -5, 0], transition: { repeat: Infinity, duration: 1 } };
+    
       default:
         return {};
     }
