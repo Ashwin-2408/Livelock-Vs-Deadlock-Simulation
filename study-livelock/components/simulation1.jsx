@@ -31,12 +31,22 @@ const LivelockSimulation = () => {
   ];
 
   const [step, setStep] = useState(0);
+  const [delayedStep, setDelayedStep] = useState(0);
 
+  // Change text immediately every 5 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setStep((prev) => (prev + 1) % steps.length);
-    }, 5000); // 5-second delay per step
+    }, 5000);
     return () => clearTimeout(timer);
+  }, [step]);
+
+  // Delay CPU and queue update by 2 second after text changes
+  useEffect(() => {
+    const delayTimer = setTimeout(() => {
+      setDelayedStep(step);
+    }, 2000);
+    return () => clearTimeout(delayTimer);
   }, [step]);
 
   return (
@@ -56,31 +66,33 @@ const LivelockSimulation = () => {
       </motion.div>
 
       {/* CPU Section */}
-      <div className="w-64 min-h-[50px] border-2 border-blue-400 rounded-lg bg-gray-800 p-4">
+      <motion.div
+        key={steps[delayedStep].cpu}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        className="w-64 min-h-[50px] border-2 border-blue-400 rounded-lg bg-gray-800 p-4"
+      >
         <h3 className="text-blue-400 text-sm font-semibold text-center">CPU</h3>
-        <motion.div
-          key={steps[step].cpu}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.5 }}
+        <div
           className={`text-lg text-center text-black px-2 py-1 mt-2 rounded-lg ${
-            steps[step].cpu == "High Priority Process"
+            steps[delayedStep].cpu === "High Priority Process"
               ? "bg-red-400"
               : "bg-green-400"
           }`}
         >
-          {steps[step].cpu}
-        </motion.div>
-      </div>
+          {steps[delayedStep].cpu}
+        </div>
+      </motion.div>
 
       {/* Switching Animation */}
-      {steps[step].switching && (
+      {steps[delayedStep].switching && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 10 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
           className="flex items-center space-x-2 text-gray-400 text-lg"
         >
           <ArrowLeftRight size={24} className="animate-pulse" />
@@ -90,29 +102,30 @@ const LivelockSimulation = () => {
       )}
 
       {/* Queue Section */}
-      <div className="w-64 min-h-[50px] border-2 border-yellow-400 rounded-lg bg-gray-800 p-4">
-        <h3 className="text-yellow-400 text-sm font-semibold">Waiting Queue</h3>
-        {steps[step].queue.map((process) => (
-          <motion.div
+      <motion.div
+        key={steps[delayedStep].queue.join(",")}
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: 10 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        className="w-64 min-h-[50px] border-2 border-yellow-400 rounded-lg bg-gray-800 p-4"
+      >
+        <h3 className="text-yellow-400 text-sm font-semibold">Waiting Queue (Scheduler)</h3>
+        {steps[delayedStep].queue.map((process) => (
+          <div
             key={process}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 10 }}
-            transition={{ duration: 0.5 }}
             className={`mt-2 text-black text-center px-4 py-1 rounded-lg ${
-                process == "High Priority Process"
-                  ? "bg-red-400"
-                  : "bg-green-400"
-              }`}
+              process === "High Priority Process" ? "bg-red-400" : "bg-green-400"
+            }`}
           >
             {process}
-          </motion.div>
+          </div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Auto-Step Indicator */}
       <div className="text-sm text-gray-400">
-        Step {step + 1} / {steps.length}
+        Step {delayedStep + 1} / {steps.length}
       </div>
     </div>
   );
